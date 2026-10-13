@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>쓰기 주제 뽑기</title>
+<style>
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#eef5f6;font-family:"Nanum Gothic","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#1c2430}
+.card{background:#fff;width:min(92vw,620px);border-radius:20px;padding:36px 32px;box-shadow:0 10px 30px rgba(31,111,120,.15);text-align:center}
+h1{margin:0 0 6px;color:#1f6f78;font-size:26px}
+.sub{margin:0 0 24px;color:#5a6672}
+#topic{font-size:28px;font-weight:700;min-height:44px;margin:10px 0 18px}
+#topic.rolling{color:#9aa7b0}
+ul{text-align:left;margin:0 auto 24px;padding-left:1.2em;max-width:460px;line-height:1.8;font-size:17px;display:none}
+button{background:#1f6f78;color:#fff;border:0;border-radius:99px;font-size:19px;padding:14px 38px;cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+.again{background:#fff;color:#1f6f78;border:2px solid #1f6f78;margin-left:8px;display:none}
+</style></head><body>
+<div class="card">
+<h1>쓰기 주제 뽑기</h1>
+<p class="sub">버튼을 누르면 주제 네 개 중 하나가 나와요.</p>
+<div id="topic">?</div>
+<ul id="qs"></ul>
+<button id="go">주제 뽑기</button><button id="again" class="again">다시 뽑기</button>
+</div>
+<script>
+const T=[
+{t:"나의 취미 생활",q:["여러분의 취미는 무엇입니까?","언제부터 하기 시작했습니까?","보통 언제 합니까?","왜 그것을 하는 것이 좋습니까?"]},
+{t:"내가 받고 싶은 선물",q:["지금까지 무슨 선물을 많이 받았습니까?","이번 생일에는 무슨 선물을 받고 싶습니까?","왜 그 선물을 받고 싶습니까?"]},
+{t:"한국에서 사는 동안 하고 싶은 일",q:["한국에서 사는 동안 하고 싶은 일이 무엇입니까?","왜 그 일을 하고 싶습니까?","그 일을 하기 위해서 어떤 준비를 할 겁니까? (무엇을 해야 합니까?/하고 있습니까?)"]},
+{t:"내가 좋아하는 친구",q:["좋아하는 친구가 있습니까?","왜 그 친구를 좋아합니까?","그 친구하고 어떻게 친해졌습니까?"]}];
+const topic=document.getElementById('topic'),qs=document.getElementById('qs'),go=document.getElementById('go'),again=document.getElementById('again');
+function pick(){go.disabled=again.disabled=true;qs.style.display='none';topic.classList.add('rolling');
+const end=Math.floor(Math.random()*T.length);let n=0,i=0;const steps=16+end;
+(function tick(){topic.textContent=T[i%T.length].t;if(n++<steps){i++;setTimeout(tick,60+n*8)}else{
+const c=T[end];topic.textContent=c.t;topic.classList.remove('rolling');
+qs.innerHTML=c.q.map(x=>'<li>'+x+'</li>').join('');qs.style.display='block';
+go.style.display='none';again.style.display='inline-block';again.disabled=false}})();}
+go.onclick=pick;again.onclick=pick;
+</script></body></html>
