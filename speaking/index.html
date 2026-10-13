@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2A 말하기 평가 그림</title>
+<style>
+body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Nanum Gothic",sans-serif;background:#eef5f6;color:#1c2430}
+header{background:#1f6f78;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px}
+header h1{margin:0;font-size:20px;flex:1}
+button{font:inherit;cursor:pointer}
+.back{background:#fff;color:#1f6f78;border:0;border-radius:99px;padding:8px 16px;font-weight:700;display:none}
+main{padding:18px;max-width:1100px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.q{background:#fff;border:0;border-radius:16px;padding:18px;text-align:left;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.q b{font-size:24px;color:#1f6f78;margin-right:8px}.q span{font-size:16px}
+.q small{display:block;color:#6b7680;margin-top:4px}
+.panel{background:#fff;border-radius:16px;padding:16px 20px;margin-bottom:16px}
+.panel h2{margin:0 0 8px;color:#1f6f78;font-size:20px}
+.panel ol{margin:0;padding-left:1.3em;font-size:17px;line-height:1.7}
+details{margin-top:10px;color:#4a5562;font-size:15px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.t{background:#fff;border:3px solid transparent;border-radius:14px;padding:8px}
+.t img{width:100%;height:180px;object-fit:contain;display:block}
+.t div{font-weight:700;color:#1f6f78;margin-top:4px}
+#full{position:fixed;inset:0;background:#fff;display:none;align-items:center;justify-content:center;z-index:9}
+#full img{max-width:100vw;max-height:100vh;object-fit:contain}
+#full p{position:fixed;bottom:10px;width:100%;text-align:center;color:#9aa;margin:0;font-size:13px}
+</style></head><body>
+<header><button class="back" id="back">← 문항</button><h1 id="title">2A 중간시험 말하기 · 그림 문항</h1></header>
+<main id="main"></main>
+<div id="full"><img id="fimg" alt=""><p>화면을 누르면 돌아가요</p></div>
+<script>
+const Q=[
+{n:2,lesson:"1과",g:"-밖에①",qs:["냉장고에 콜라가/바나나가 있어요?","책상 위에 펜이 있어요?","교실에 학생이 있어요?"],imgs:[["2-1a","질문1 · 냉장고 (물)"],["2-1b","질문1 · 냉장고 (사과)"],["2-2","질문2 · 책상"],["2-3","질문3 · 교실"]],c:"5점: '아니요' 없어도 5점 · 3점: -만 있다, -이/가 있다 (1급 문법)"},
+{n:4,lesson:"2과",g:"-기",qs:["이 사람의 취미가 뭐예요?"],imgs:[["4-1","그림 1"],["4-2","그림 2"],["4-3","그림 3"]],c:"5점: 음악 감상이에요, 독서예요 (2급 단어) · 4점: 저는, 제 취미는 (-1 감점) · 3점: -는 것 (1급 문법) · 1점: 음악을 들어요 (단어 나열)"},
+{n:5,lesson:"2과",g:"-아/어지다",qs:["날씨가 예전하고 지금 어떻게 바뀌었어요?","머리가 예전하고 지금 어떻게 바뀌었어요?","방이 예전하고 지금 어떻게 바뀌었어요?"],imgs:[["5-1","질문1 · 날씨"],["5-2","질문2 · 머리"],["5-3","질문3 · 방"]],c:"5점: 질문1 따뜻해졌어요(인정), 여름이 됐어요 / 질문2 짧게 잘랐어요, 짧은 머리가 됐어요 (2급 문법) · 4점: 질문1 날씨가 좋아졌어요 · 3점: 질문2 머리를 잘랐어요 · 1점: 따뜻해요, 짧아요, 깨끗해요 · 0점: 질문2 잘라졌어요"},
+{n:6,lesson:"3과",g:"-기로 하다①",qs:["다음 주 (  )요일에 무슨 약속이 있어요?"],imgs:[["6","요일별 약속표"]],c:"5점: 만나서/-에 가서 -(으)ㄹ 거예요, -게 됐어요 (2급 문법) · 4점: 겠습니다 · 3점: -(으)ㄹ 거예요, -아/어요, -(으)려고 해요 · 2점: -는 약속이 있어요 · 0점: 마십시다"},
+{n:10,lesson:"5과",g:"-(으)로 하다",qs:["어떻게 계산하시겠습니까?","메뉴판이 있습니다. 무엇을 드시겠어요?","어서 오세요. 무슨 과일을 드릴까요?"],imgs:[["10-1","질문1 · 카드/현금"],["10-2","질문2 · 커피/아이스크림"],["10-3","질문2 · 메뉴판"],["10-4","질문3 · 사과/수박"]],c:"4점: 질문1 -(으)로 합니다 / 질문2 -을/를 먹겠어요 · 3점: '-(으)로' 없이 -주세요, -(으)ㄹ게요, -이/가 좋겠습니다 · 0점: 드시겠어요"},
+{n:11,lesson:"5과",g:"-아/어 보이다",qs:["이 사람이 어때 보여요?"],imgs:[["11-1","그림 1"],["11-2","그림 2"],["11-3","그림 3"]],c:"5점: -(으)ㄴ/는 것 같아요 (2급 문법) · 1점: 피곤해요, 바빠요 (단어 나열)"},
+{n:13,lesson:"6과",g:"-는데 / -게 되다",qs:["예전과 지금 무엇이 달라요/바뀌었어요?"],imgs:[["13-1","된장찌개"],["13-2","한국어"],["13-3","춤"]],c:"*1개만 말해도 인정 · 5점: A-아/어지다 (2급 문법) · 3점: -지만 (1급 문법) · 0점: V-아/어지다 (비문)"},
+{n:14,lesson:"7과",g:"간접화법 (문장 제시)",qs:["아놀드 씨가 뭐라고 했어요?"],imgs:[["14-1","어제 산 옷이 커요."],["14-2","한국어가 정말 쉬워요."],["14-3","저는 설먼 씨하고 친구예요."]],c:"5점: 질문3 '자기는' 생략 가능 · 4점: 질문3 '저는' 그대로 -1 · 3점: -다고 하다 (커다고, 쉬워다고, 친구다고), 직접 인용 · 0점: 보고 읽기만 한 경우"},
+{n:15,lesson:"7과",g:"-고 나서",qs:["이 사람은 어제 뭐 했어요?"],imgs:[["15-1","그림 1"],["15-2","그림 2"],["15-3","그림 3"]],c:"3점: -고, -(으)ㄴ 후에 (1급 문법) · 1점: 운동해요. 쉬어요. (단어 나열) · 0점: 단어 1개만 말한 경우"}];
+const main=document.getElementById('main'),back=document.getElementById('back'),title=document.getElementById('title'),full=document.getElementById('full'),fimg=document.getElementById('fimg');
+function home(){back.style.display='none';title.textContent='2A 중간시험 말하기 · 그림 문항';
+main.innerHTML='<div class="grid">'+Q.map((q,i)=>`<button class="q" onclick="show(${i})"><b>${q.n}</b><span>${q.g}</span><small>${q.lesson} · 그림 ${q.imgs.length}장</small></button>`).join('')+'</div>';scrollTo(0,0)}
+function show(i){const q=Q[i];back.style.display='inline-block';title.textContent=`${q.n}번 · ${q.g}`;
+main.innerHTML=`<div class="panel"><h2>질문</h2><ol>${q.qs.map(x=>'<li>'+x+'</li>').join('')}</ol><details><summary>채점 기준</summary><p>${q.c}</p></details></div>
+<div class="thumbs">${q.imgs.map(([f,l])=>`<button class="t" onclick="big('${f}')"><img src="img/${f}.jpg" alt="${l}"><div>${l}</div></button>`).join('')}</div>`;scrollTo(0,0)}
+function big(f){fimg.src='img/'+f+'.jpg';full.style.display='flex'}
+full.onclick=()=>full.style.display='none';back.onclick=home;home();
+</script></body></html>
